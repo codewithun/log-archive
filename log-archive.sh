@@ -2,14 +2,9 @@
 
 # ==========================================
 # Log Archive Tool
-# Archives logs into a compressed tar.gz file
 # ==========================================
 
 set -o pipefail
-
-# ------------------------------------------
-# Configuration
-# ------------------------------------------
 
 ARCHIVE_DIR="./archive"
 LOG_FILE="$ARCHIVE_DIR/archive.log"
@@ -18,7 +13,7 @@ LOG_FILE="$ARCHIVE_DIR/archive.log"
 # Check Arguments
 # ------------------------------------------
 
-if [ $# -ne 1 ]; then
+if [ "$#" -ne 1 ]; then
     echo "Usage: $0 <log-directory>"
     echo "Example: $0 /var/log"
     exit 1
@@ -27,7 +22,7 @@ fi
 LOG_DIR="$1"
 
 # ------------------------------------------
-# Validate Log Directory
+# Validate Directory
 # ------------------------------------------
 
 if [ ! -d "$LOG_DIR" ]; then
@@ -61,7 +56,9 @@ ARCHIVE_PATH="$ARCHIVE_DIR/$ARCHIVE_NAME"
 
 echo "Creating archive..."
 
-tar -czf "$ARCHIVE_PATH" -C "$(dirname "$LOG_DIR")" "$(basename "$LOG_DIR")"
+tar -czf "$ARCHIVE_PATH" \
+    -C "$(dirname "$LOG_DIR")" \
+    "$(basename "$LOG_DIR")"
 
 if [ $? -ne 0 ]; then
     echo "Error: Failed to create archive."
@@ -85,4 +82,4 @@ echo "Archive created successfully!"
 echo
 echo "Source      : $LOG_DIR"
 echo "Archive     : $ARCHIVE_PATH"
-echo "Archived at : $ARCHIVE_TIME"`
+echo "Archived at : $ARCHIVE_TIME"
